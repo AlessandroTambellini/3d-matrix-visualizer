@@ -1,64 +1,73 @@
 import { draw_parallelepiped, p1, p2, p3 } from './paint.js';
 
-const open_matrix_nav_btn = document.querySelector('#open-matrix-nav-btn');
-const open_controls_btn = document.querySelector('#open-controls-btn');
-const matrix_nav = document.querySelector('#matrix-nav');
+const aside = document.querySelector('aside');
+const matrixnav = document.querySelector('#matrix-nav');
 const controls = document.querySelector('#controls');
+const btn_openMatrixnav = document.querySelector('#open-matrix-nav-btn');
+const btn_openControls = document.querySelector('#open-controls-btn');
 
 const custom_matrix_vectors = controls.querySelectorAll(".custom-matrix-vector");
 const scalar_inputs = controls.querySelectorAll('.v-scalar-input');
 const scalars = controls.querySelectorAll('.v-scalar');
 
-// open_matrix_nav_btn.addEventListener('click', e => e.stopPropagation());
+let controls_is_open = false;
+let matrixnav_is_open = false;
 
-let controls_are_open = false;
-let matrix_nav_is_open = false;
-
-open_controls_btn.addEventListener('click', () => 
+btn_openControls.addEventListener('click', e => 
 {    
-    matrix_nav_is_open = false;
-
-    if (!controls_are_open) {
-        open_controls_btn.classList.remove('display-opaque');
+    if (!controls_is_open) {
+        btn_openControls.classList.remove('display-opaque');
+        btn_openMatrixnav.classList.add('display-opaque');
         switch_class(controls, 'display-none', 'display-block');
-        switch_class(matrix_nav, 'display-block', 'display-none');
-        open_matrix_nav_btn.classList.add('display-opaque');
+        switch_class(matrixnav, 'display-block', 'display-none');
     } else {
         close_navigation();
     }
 
-    controls_are_open = !controls_are_open;
+    matrixnav_is_open = false;
+    controls_is_open = !controls_is_open;
 });
 
-open_matrix_nav_btn.addEventListener('click', () => 
+btn_openMatrixnav.addEventListener('click', e => 
 {    
-    controls_are_open = false;
-
-    if (!matrix_nav_is_open)
+    if (!matrixnav_is_open)
     {
-        open_matrix_nav_btn.classList.remove('display-opaque');
+        btn_openMatrixnav.classList.remove('display-opaque');
+        btn_openControls.classList.add('display-opaque');
         switch_class(controls, 'display-block', 'display-none');
-        switch_class(matrix_nav, 'display-none', 'display-block');
-        open_controls_btn.classList.add('display-opaque');
+        switch_class(matrixnav, 'display-none', 'display-block');
     } else {
         close_navigation();
     }
 
-    matrix_nav_is_open = !matrix_nav_is_open;
+    controls_is_open = false;
+    matrixnav_is_open = !matrixnav_is_open;
+});
+
+aside.addEventListener('click', e => e.stopPropagation());
+document.addEventListener('click', _ => {
+    close_navigation();
+    controls_is_open = false;
+    matrixnav_is_open = false;
 });
 
 function close_navigation() 
 {
-    open_controls_btn.classList.remove('display-opaque');
-    open_matrix_nav_btn.classList.remove('display-opaque');
+    btn_openControls.classList.remove('display-opaque');
+    btn_openMatrixnav.classList.remove('display-opaque');
     switch_class(controls, 'display-block', 'display-none'); 
-    switch_class(matrix_nav, 'display-block', 'display-none'); 
+    switch_class(matrixnav, 'display-block', 'display-none'); 
 }
 
 function switch_class(element, old, _new) {
     element.classList.remove(old);
     element.classList.add(_new)
 }
+
+
+/*
+ * 
+ */
 
 document.querySelector("#custom-matrix").addEventListener('submit', e => 
 {
